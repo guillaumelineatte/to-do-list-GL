@@ -1,0 +1,24 @@
+<div class="app-container">
+  <header *ngIf="authService.isAuthenticated() | async">
+    <nav>
+      <div class="logo">
+        TodoList
+      </div>
+      <ul class="nav-links">
+        <li>
+          <a routerLink="/tasks" routerLinkActive="active">Tâches</a>
+        </li>
+        <li>
+          <a routerLink="/categories" routerLinkActive="active">Catégories</a>
+        </li>
+        <li>
+          <button (click)="logout()" class="logout-btn">Déconnexion</button>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+</div>

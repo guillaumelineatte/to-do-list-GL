@@ -1,0 +1,187 @@
+.task-list-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+
+  .task-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    h2 {
+      color: #333;
+      margin: 0;
+    }
+
+    .add-task-btn {
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #1976D2;
+      }
+    }
+  }
+
+  .task-list {
+    .task-item {
+      background: white;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+
+      &.completed {
+        opacity: 0.7;
+        .task-title {
+          text-decoration: line-through;
+        }
+      }
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .task-content {
+        display: flex;
+        padding: 1rem;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .task-checkbox {
+        input {
+          width: 20px;
+          height: 20px;
+          cursor: pointer;
+        }
+      }
+
+      .task-info {
+        flex: 1;
+
+        .task-title {
+          font-size: 1.1rem;
+          color: #333;
+          margin-bottom: 0.5rem;
+        }
+
+        .task-details {
+          display: flex;
+          gap: 0.8rem;
+          align-items: center;
+          font-size: 0.9rem;
+        }
+
+        .category-badge {
+          padding: 0.3rem 0.8rem;
+          border-radius: 12px;
+          color: white;
+          font-size: 0.8rem;
+        }
+
+        .priority-badge {
+          padding: 0.3rem 0.8rem;
+          border-radius: 12px;
+          font-size: 0.8rem;
+
+          &.high {
+            background-color: #f44336;
+            color: white;
+          }
+
+          &.medium {
+            background-color: #ff9800;
+            color: white;
+          }
+
+          &.low {
+            background-color: #4caf50;
+            color: white;
+          }
+        }
+
+        .due-date {
+          color: #666;
+        }
+      }
+
+      .task-actions {
+        display: flex;
+        gap: 0.5rem;
+
+        button {
+          padding: 0.5rem 1rem;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+
+          &.edit-btn {
+            background-color: #2196F3;
+            color: white;
+
+            &:hover {
+              background-color: #1976D2;
+            }
+          }
+
+          &.delete-btn {
+            background-color: #f44336;
+            color: white;
+
+            &:hover {
+              background-color: #d32f2f;
+            }
+          }
+        }
+      }
+    }
+
+    .subtasks {
+      padding: 0.5rem 1rem 1rem 3rem;
+      border-top: 1px solid #eee;
+
+      .subtask-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+        color: #666;
+
+        input {
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+  }
+}
+
+// Styles pour le drag & drop
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 8px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.task-list.cdk-drop-list-dragging .task-item:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

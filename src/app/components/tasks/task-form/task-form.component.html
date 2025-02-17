@@ -1,0 +1,99 @@
+<div class="task-form-container">
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <h2>{{ isEditMode ? 'Modifier la tâche' : 'Nouvelle tâche' }}</h2>
+
+    <div class="form-group">
+      <label for="title">Titre</label>
+      <input id="title" type="text" formControlName="title" placeholder="Titre de la tâche">
+      <div class="error" *ngIf="taskForm.get('title')?.errors?.['required'] && taskForm.get('title')?.touched">
+        Le titre est requis
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" formControlName="description" rows="3"
+                placeholder="Description de la tâche"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="category">Catégorie</label>
+      <select id="category" formControlName="categoryId">
+        <option value="">Sélectionner une catégorie</option>
+        <ng-container *ngIf="categories$ | async as categories">
+          <option *ngFor="let category of categories" [value]="category.id"
+                  [style.color]="category.color">
+            {{ category.name }}
+          </option>
+        </ng-container>
+      </select>
+      <div class="error" *ngIf="taskForm.get('categoryId')?.errors?.['required'] && taskForm.get('categoryId')?.touched">
+        La catégorie est requise
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="priority">Priorité</label>
+      <select id="priority" formControlName="priority">
+        <option value="HIGH">Haute</option>
+        <option value="MEDIUM">Moyenne</option>
+        <option value="LOW">Basse</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="dueDate">Date d'échéance</label>
+      <input id="dueDate" type="datetime-local" formControlName="dueDate">
+      <div class="error" *ngIf="taskForm.get('dueDate')?.errors?.['required'] && taskForm.get('dueDate')?.touched">
+        La date d'échéance est requise
+      </div>
+    </div>
+
+    <div class="notification-settings" formGroupName="notificationSettings">
+      <h3>Paramètres de notification</h3>
+
+      <div class="checkbox-group">
+        <label>
+          <input type="checkbox" formControlName="enabled">
+          Activer les notifications
+        </label>
+      </div>
+
+      <div class="checkbox-group">
+        <label>
+          <input type="checkbox" formControlName="emailEnabled">
+          Recevoir par email
+        </label>
+      </div>
+
+      <div class="form-group" *ngIf="taskForm.get('notificationSettings.enabled')?.value">
+        <label for="notifyAt">Me notifier</label>
+        <input id="notifyAt" type="datetime-local" formControlName="notifyAt">
+      </div>
+    </div>
+
+    <div class="subtasks-section">
+      <h3>Sous-tâches</h3>
+      <div formArrayName="subtasks">
+        <div *ngFor="let subtask of subtasks.controls; let i=index"
+             [formGroupName]="i"
+             class="subtask-item">
+          <input type="text" formControlName="title" placeholder="Titre de la sous-tâche">
+          <button type="button" class="remove-btn" (click)="removeSubtask(i)">
+            Supprimer
+          </button>
+        </div>
+      </div>
+      <button type="button" class="add-subtask-btn" (click)="addSubtask()">
+        Ajouter une sous-tâche
+      </button>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="cancel-btn" routerLink="/tasks">Annuler</button>
+      <button type="submit" [disabled]="!taskForm.valid">
+        {{ isEditMode ? 'Mettre à jour' : 'Créer' }}
+      </button>
+    </div>
+  </form>
+</div>

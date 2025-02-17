@@ -1,0 +1,63 @@
+<div class="task-list-container">
+  <div class="task-list-header">
+    <h2>Mes tâches</h2>
+    <button routerLink="/tasks/new" class="add-task-btn">
+      Nouvelle tâche
+    </button>
+  </div>
+
+  <div class="task-list"
+       cdkDropList
+       [cdkDropListData]="tasks$ | async"
+       (cdkDropListDropped)="onDrop($event)">
+
+    <ng-container *ngIf="tasks$ | async as tasks">
+      <ng-container *ngIf="categories$ | async as categories">
+        <div *ngFor="let task of tasks"
+             class="task-item"
+             [class.completed]="task.completed"
+             cdkDrag>
+          <div class="task-content">
+            <div class="task-checkbox">
+              <input type="checkbox"
+                     [checked]="task.completed"
+                     (change)="toggleTaskComplete(task)">
+            </div>
+
+            <div class="task-info">
+              <div class="task-title">{{ task.title }}</div>
+              <div class="task-details">
+                <span class="category-badge"
+                      [style.background-color]="getCategoryColor(task.categoryId, categories)">
+                  {{ categories.find(c => c.id === task.categoryId)?.name }}
+                </span>
+                <span class="priority-badge" [class]="task.priority.toLowerCase()">
+                  {{ task.priority }}
+                </span>
+                <span class="due-date" *ngIf="task.dueDate">
+                  {{ task.dueDate | date:'shortDate' }}
+                </span>
+              </div>
+            </div>
+
+            <div class="task-actions">
+              <button class="edit-btn" [routerLink]="['/tasks', task.id, 'edit']">
+                Modifier
+              </button>
+              <button class="delete-btn" (click)="deleteTask(task.id)">
+                Supprimer
+              </button>
+            </div>
+          </div>
+
+          <div class="subtasks" *ngIf="task.subtasks?.length">
+            <div *ngFor="let subtask of task.subtasks" class="subtask-item">
+              <input type="checkbox" [checked]="subtask.completed">
+              <span>{{ subtask.title }}</span>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>

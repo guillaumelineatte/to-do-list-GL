@@ -1,0 +1,47 @@
+<div class="category-list-container">
+  <div class="category-header">
+    <h2>Gestion des catégories</h2>
+  </div>
+
+  <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" class="category-form">
+    <div class="form-group">
+      <label for="name">Nom de la catégorie</label>
+      <input id="name" type="text" formControlName="name" placeholder="Nom de la catégorie">
+      <div class="error" *ngIf="categoryForm.get('name')?.errors?.['required'] && categoryForm.get('name')?.touched">
+        Le nom est requis
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="color">Couleur</label>
+      <input id="color" type="color" formControlName="color">
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="!categoryForm.valid">
+        {{ isEditing ? 'Mettre à jour' : 'Ajouter' }}
+      </button>
+      <button type="button" class="cancel-btn" *ngIf="isEditing" (click)="cancelEditing()">
+        Annuler
+      </button>
+    </div>
+  </form>
+
+  <div class="category-list">
+    <div class="category-item" *ngFor="let category of categories$ | async">
+      <div class="category-info">
+        <div class="color-preview" [style.background-color]="category.color"></div>
+        <span class="category-name">{{ category.name }}</span>
+      </div>
+
+      <div class="category-actions" *ngIf="!category.isDefault">
+        <button class="edit-btn" (click)="startEditing(category)">
+          Modifier
+        </button>
+        <button class="delete-btn" (click)="deleteCategory(category.id)">
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
